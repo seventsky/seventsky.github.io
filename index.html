@@ -9,7 +9,32 @@
 <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human_brain.png">
 
 <style>
+<script>
+const frases = [
+  "isso não era pra estar aqui",
+  "você já escreveu isso antes",
+  "memória duplicada detectada",
+  "erro ao interpretar emoção",
+  "isso é real?",
+  "não confie nisso"
+];
 
+setInterval(() => {
+  const frase = document.createElement("div");
+  frase.innerText = frases[Math.floor(Math.random() * frases.length)];
+
+  frase.style.position = "fixed";
+  frase.style.top = Math.random() * 100 + "%";
+  frase.style.left = Math.random() * 100 + "%";
+  frase.style.color = "#ff00c8";
+  frase.style.fontSize = "10px";
+  frase.style.opacity = "0.4";
+
+  document.body.appendChild(frase);
+
+  setTimeout(() => frase.remove(), 2000);
+}, 3000);
+</script>
 body {
   background: #0a0a0a;
   color: #cfcfcf;
