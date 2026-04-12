@@ -2,58 +2,108 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>arquivo.exe</title>
+<title>memoria_corrompida.exe</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Special+Elite&display=swap" rel="stylesheet">
+
+<link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human_brain.png">
 
 <style>
+
 body {
-  background: #0d0d0d;
-  color: #d0d0d0;
+  background: #0a0a0a;
+  color: #cfcfcf;
   font-family: 'Special Elite', serif;
   display: flex;
   justify-content: center;
   margin: 0;
+  overflow-x: hidden;
 }
 
+/* glitch fundo leve */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.02) 0px,
+    rgba(255,255,255,0.02) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+/* container */
 .container {
   width: 600px;
   padding: 40px 20px;
 }
 
+/* header */
 header {
   text-align: center;
   margin-bottom: 40px;
 }
 
-header h1 {
+header img {
+  width: 80px;
+  opacity: 0.8;
+  filter: contrast(120%);
+}
+
+/* glitch texto */
+.glitch {
+  position: relative;
   font-size: 26px;
   letter-spacing: 2px;
-  color: #e4e4e4;
+  color: white;
 }
 
-header p {
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  left: 0;
+}
+
+.glitch::before {
+  color: #ff00c8;
+  transform: translate(2px, -1px);
+  opacity: 0.6;
+}
+
+.glitch::after {
+  color: #00ff99;
+  transform: translate(-2px, 1px);
+  opacity: 0.6;
+}
+
+.subtitle {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 12px;
-  color: #6a6a6a;
+  font-size: 11px;
+  color: #555;
 }
 
+/* posts */
 .post {
-  border-left: 2px solid #444;
+  border-left: 2px solid #333;
   padding: 15px;
   margin-bottom: 25px;
   transition: 0.3s;
 }
 
 .post:hover {
-  border-left: 2px solid #00ff99;
+  border-left: 2px solid #ff00c8;
   background: rgba(255,255,255,0.02);
 }
 
 .date {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: #555;
+  font-size: 10px;
+  color: #666;
   margin-bottom: 8px;
 }
 
@@ -62,6 +112,7 @@ header p {
   line-height: 1.6;
 }
 
+/* input */
 textarea {
   width: 100%;
   height: 90px;
@@ -73,12 +124,13 @@ textarea {
   font-family: 'IBM Plex Mono', monospace;
 }
 
+/* botão */
 button {
   margin-top: 10px;
   width: 100%;
   padding: 10px;
   background: #111;
-  color: #aaa;
+  color: #777;
   border: 1px solid #333;
   cursor: pointer;
 }
@@ -88,26 +140,22 @@ button:hover {
   border-color: #00ff99;
 }
 
+/* efeito piscando aleatório */
+@keyframes flicker {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.flicker {
+  animation: flicker 2s infinite;
+}
+
 footer {
   text-align: center;
   margin-top: 40px;
-  font-size: 11px;
-  color: #444;
-}
-
-/* glitch leve */
-.glitch {
-  position: relative;
-  display: inline-block;
-}
-
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 2px;
-  top: 0;
-  color: #ff00c8;
-  opacity: 0.5;
+  font-size: 10px;
+  color: #333;
 }
 
 </style>
@@ -118,17 +166,18 @@ footer {
 <div class="container">
 
 <header>
-  <h1 class="glitch" data-text="arquivo.exe">arquivo.exe</h1>
-  <p>memórias corrompidas // 2003-2026</p>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human_brain.png">
+  <h1 class="glitch" data-text="memoria_corrompida.exe">memoria_corrompida.exe</h1>
+  <p class="subtitle">logs internos // instável</p>
 </header>
 
 <div id="posts"></div>
 
 <textarea id="input" placeholder="escreve algo..."></textarea>
-<button onclick="addPost()">publicar</button>
+<button onclick="addPost()">registrar</button>
 
-<footer>
-  sistema instável
+<footer class="flicker">
+  sistema emocional não confiável
 </footer>
 
 </div>
