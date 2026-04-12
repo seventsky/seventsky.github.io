@@ -6,6 +6,9 @@
 
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
+<!-- ícone da aba -->
+<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2965/2965567.png">
+
 <style>
 body {
   margin: 0;
@@ -15,37 +18,39 @@ body {
   overflow: hidden;
 }
 
-/* DESKTOP */
+/* desktop */
 .desktop {
   width: 100vw;
   height: 100vh;
   position: relative;
+  background: radial-gradient(#020202, #000);
 }
 
-/* ÍCONES */
+/* ícones */
 .icon {
   width: 80px;
   text-align: center;
   cursor: pointer;
   position: absolute;
-  color: #aaa;
+  color: #888;
 }
 
 .icon img {
-  width: 48px;
+  width: 50px;
+  filter: grayscale(100%) contrast(120%) brightness(80%);
 }
 
 .icon:hover {
   color: #00ffcc;
 }
 
-/* JANELA */
+/* janela */
 .window {
   width: 520px;
   height: 400px;
   background: #0d0d0d;
   border: 1px solid #00ffcc;
-  box-shadow: 0 0 15px #00ffcc33;
+  box-shadow: 0 0 20px rgba(0,255,204,0.2);
   position: absolute;
   top: 80px;
   left: 80px;
@@ -53,7 +58,7 @@ body {
   flex-direction: column;
 }
 
-/* HEADER */
+/* header */
 .header {
   background: #00ffcc;
   color: black;
@@ -63,26 +68,26 @@ body {
   justify-content: space-between;
 }
 
-/* BOTÃO */
+/* botão fechar */
 .close {
   cursor: pointer;
 }
 
-/* CONTEÚDO */
+/* conteúdo */
 .content {
   padding: 10px;
   overflow-y: auto;
   flex: 1;
 }
 
-/* POSTS */
+/* posts */
 .post {
   border-bottom: 1px dashed #333;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
 
-/* INPUT */
+/* input */
 textarea {
   width: 100%;
   background: black;
@@ -92,6 +97,7 @@ textarea {
   font-family: inherit;
 }
 
+/* botão */
 button {
   width: 100%;
   margin-top: 5px;
@@ -101,7 +107,12 @@ button {
   cursor: pointer;
 }
 
-/* TASKBAR */
+button:hover {
+  background: #00ffcc;
+  color: black;
+}
+
+/* taskbar */
 .taskbar {
   position: absolute;
   bottom: 0;
@@ -112,7 +123,7 @@ button {
   font-size: 14px;
 }
 
-/* GLITCH leve */
+/* glitch leve */
 .glitch {
   text-shadow: 1px 0 #ff00c8, -1px 0 #00ffff;
 }
@@ -124,13 +135,13 @@ button {
 
 <div class="desktop">
 
-  <!-- ÍCONE -->
+  <!-- ícone -->
   <div class="icon" style="top:40px; left:40px;" onclick="openWin()">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human_brain.png">
+    <img src="https://cdn-icons-png.flaticon.com/512/2965/2965567.png">
     <div>memories</div>
   </div>
 
-  <!-- JANELA -->
+  <!-- janela -->
   <div class="window" id="win">
     <div class="header">
       <span class="glitch">memory.log</span>
@@ -145,9 +156,9 @@ button {
     </div>
   </div>
 
-  <!-- BARRA -->
+  <!-- barra -->
   <div class="taskbar">
-    system online // status: instável
+    system online // estado: instável
   </div>
 
 </div>
@@ -155,16 +166,17 @@ button {
 <script>
 const win = document.getElementById("win");
 
-/* abrir/fechar */
+/* abrir */
 function openWin() {
   win.style.display = "flex";
 }
 
+/* fechar */
 function closeWin() {
   win.style.display = "none";
 }
 
-/* posts */
+/* criar post */
 function addPost() {
   const text = document.getElementById("input").value;
   if (!text.trim()) return;
@@ -182,6 +194,7 @@ function addPost() {
   document.getElementById("input").value = "";
 }
 
+/* carregar posts */
 window.onload = () => {
   let saved = JSON.parse(localStorage.getItem("posts") || "[]");
   saved.forEach(text => {
