@@ -2,185 +2,108 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>memoria_corrompida.exe</title>
+<title>SYSTEM://MEMORY</title>
 
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&family=Special+Elite&display=swap" rel="stylesheet">
-
-<link rel="icon" href="https://64.media.tumblr.com/e93eef83ad4495fb02d19c3fc0e3aa93/7ef977adeda40699-af/s400x600/87669e1fd278f1624650920a8c714fb98da892d0.gifv">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
 
 <style>
-<script>
-const frases = [
-  "isso não era pra estar aqui",
-  "você já escreveu isso antes",
-  "memória duplicada detectada",
-  "erro ao interpretar emoção",
-  "isso é real?",
-  "não confie nisso"
-];
-
-setInterval(() => {
-  const frase = document.createElement("div");
-  frase.innerText = frases[Math.floor(Math.random() * frases.length)];
-
-  frase.style.position = "fixed";
-  frase.style.top = Math.random() * 100 + "%";
-  frase.style.left = Math.random() * 100 + "%";
-  frase.style.color = "#ff00c8";
-  frase.style.fontSize = "10px";
-  frase.style.opacity = "0.4";
-
-  document.body.appendChild(frase);
-
-  setTimeout(() => frase.remove(), 2000);
-}, 3000);
-</script>
 body {
-  background: #0a0a0a;
-  color: #cfcfcf;
-  font-family: 'Special Elite', serif;
-  display: flex;
-  justify-content: center;
   margin: 0;
-  overflow-x: hidden;
-}
-
-/* glitch fundo leve */
-body::before {
-  content: "";
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: repeating-linear-gradient(
-    0deg,
-    rgba(255,255,255,0.02) 0px,
-    rgba(255,255,255,0.02) 1px,
-    transparent 1px,
-    transparent 2px
-  );
-  pointer-events: none;
-}
-
-/* container */
-.container {
-  width: 600px;
-  padding: 40px 20px;
-}
-
-/* header */
-header {
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-header img {
-  width: 80px;
-  opacity: 0.8;
-  filter: contrast(120%);
-}
-
-/* glitch texto */
-.glitch {
-  position: relative;
-  font-size: 26px;
-  letter-spacing: 2px;
-  color: white;
-}
-
-.glitch::before,
-.glitch::after {
-  content: attr(data-text);
-  position: absolute;
-  left: 0;
-}
-
-.glitch::before {
-  color: #ff00c8;
-  transform: translate(2px, -1px);
-  opacity: 0.6;
-}
-
-.glitch::after {
+  background: #000;
+  font-family: 'IBM Plex Mono', monospace;
   color: #00ff99;
-  transform: translate(-2px, 1px);
-  opacity: 0.6;
+  overflow: hidden;
 }
 
-.subtitle {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
-  color: #555;
+/* DESKTOP */
+.desktop {
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(#020202, #000);
+  position: relative;
 }
 
-/* posts */
+/* ÍCONES */
+.icon {
+  width: 80px;
+  text-align: center;
+  cursor: pointer;
+  position: absolute;
+  color: #aaa;
+}
+
+.icon img {
+  width: 50px;
+}
+
+.icon:hover {
+  color: #00ff99;
+}
+
+/* JANELA */
+.window {
+  width: 500px;
+  height: 400px;
+  background: #111;
+  border: 2px solid #00ff99;
+  position: absolute;
+  top: 50px;
+  left: 50px;
+  display: none;
+  flex-direction: column;
+}
+
+/* HEADER */
+.window-header {
+  background: #00ff99;
+  color: black;
+  padding: 5px;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* CONTEÚDO */
+.window-content {
+  padding: 10px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* POSTS */
 .post {
-  border-left: 2px solid #333;
-  padding: 15px;
-  margin-bottom: 25px;
-  transition: 0.3s;
+  border-bottom: 1px solid #333;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
 }
 
-.post:hover {
-  border-left: 2px solid #ff00c8;
-  background: rgba(255,255,255,0.02);
-}
-
-.date {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px;
-  color: #666;
-  margin-bottom: 8px;
-}
-
-.content {
-  font-size: 15px;
-  line-height: 1.6;
-}
-
-/* input */
+/* INPUT */
 textarea {
   width: 100%;
-  height: 90px;
-  background: #111;
-  color: #ccc;
-  border: 1px solid #333;
-  padding: 10px;
-  margin-top: 20px;
-  font-family: 'IBM Plex Mono', monospace;
+  background: black;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+  margin-top: 10px;
 }
 
-/* botão */
 button {
-  margin-top: 10px;
   width: 100%;
-  padding: 10px;
-  background: #111;
-  color: #777;
-  border: 1px solid #333;
+  background: black;
+  color: #00ff99;
+  border: 1px solid #00ff99;
+  margin-top: 5px;
   cursor: pointer;
 }
 
-button:hover {
-  color: #00ff99;
-  border-color: #00ff99;
-}
-
-/* efeito piscando aleatório */
-@keyframes flicker {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
-
-.flicker {
-  animation: flicker 2s infinite;
-}
-
-footer {
-  text-align: center;
-  margin-top: 40px;
-  font-size: 10px;
-  color: #333;
+/* TASKBAR */
+.taskbar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #111;
+  padding: 5px;
+  border-top: 1px solid #00ff99;
+  font-size: 12px;
 }
 
 </style>
@@ -188,43 +111,60 @@ footer {
 
 <body>
 
-<div class="container">
+<div class="desktop">
 
-<header>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human_brain.png">
-  <h1 class="glitch" data-text="memoria_corrompida.exe">memoria_corrompida.exe</h1>
-  <p class="subtitle">logs internos // instável</p>
-</header>
+  <!-- ÍCONES -->
+  <div class="icon" style="top:40px; left:40px;" onclick="openWindow()">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Human_brain.png">
+    <div>memories</div>
+  </div>
 
-<div id="posts"></div>
+  <!-- JANELA -->
+  <div class="window" id="window">
+    <div class="window-header">
+      <span>memory.log</span>
+      <span onclick="closeWindow()">X</span>
+    </div>
 
-<textarea id="input" placeholder="escreve algo..."></textarea>
-<button onclick="addPost()">registrar</button>
+    <div class="window-content">
+      <div id="posts"></div>
 
-<footer class="flicker">
-  sistema emocional não confiável
-</footer>
+      <textarea id="input"></textarea>
+      <button onclick="addPost()">salvar</button>
+    </div>
+  </div>
+
+  <!-- TASKBAR -->
+  <div class="taskbar">
+    SYSTEM ONLINE // emocional instável
+  </div>
 
 </div>
 
 <script>
+
+/* abrir/fechar */
+function openWindow() {
+  document.getElementById("window").style.display = "flex";
+}
+
+function closeWindow() {
+  document.getElementById("window").style.display = "none";
+}
+
+/* posts */
 function addPost() {
   const text = document.getElementById("input").value;
   if (!text.trim()) return;
 
-  const date = new Date().toLocaleString();
-
   const post = document.createElement("div");
   post.className = "post";
-  post.innerHTML = `
-    <div class="date">${date}</div>
-    <div class="content">${text}</div>
-  `;
+  post.innerText = text;
 
   document.getElementById("posts").prepend(post);
 
   let saved = JSON.parse(localStorage.getItem("posts") || "[]");
-  saved.unshift({text, date});
+  saved.unshift(text);
   localStorage.setItem("posts", JSON.stringify(saved));
 
   document.getElementById("input").value = "";
@@ -232,16 +172,34 @@ function addPost() {
 
 window.onload = () => {
   let saved = JSON.parse(localStorage.getItem("posts") || "[]");
-  saved.forEach(p => {
+  saved.forEach(text => {
     const post = document.createElement("div");
     post.className = "post";
-    post.innerHTML = `
-      <div class="date">${p.date}</div>
-      <div class="content">${p.text}</div>
-    `;
+    post.innerText = text;
     document.getElementById("posts").appendChild(post);
   });
 }
+
+/* arrastar janela */
+const win = document.getElementById("window");
+const header = document.querySelector(".window-header");
+
+let offsetX = 0, offsetY = 0, isDown = false;
+
+header.onmousedown = (e) => {
+  isDown = true;
+  offsetX = win.offsetLeft - e.clientX;
+  offsetY = win.offsetTop - e.clientY;
+};
+
+document.onmouseup = () => isDown = false;
+
+document.onmousemove = (e) => {
+  if (!isDown) return;
+  win.style.left = (e.clientX + offsetX) + "px";
+  win.style.top = (e.clientY + offsetY) + "px";
+};
+
 </script>
 
 </body>
