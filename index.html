@@ -6,9 +6,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
-<!-- ícone da aba -->
-<link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2965/2965567.png">
-
 <style>
 body {
   margin: 0;
@@ -18,39 +15,32 @@ body {
   overflow: hidden;
 }
 
-/* desktop */
 .desktop {
   width: 100vw;
   height: 100vh;
   position: relative;
-  background: radial-gradient(#020202, #000);
 }
 
-/* ícones */
+/* ÍCONES */
 .icon {
   width: 80px;
   text-align: center;
   cursor: pointer;
   position: absolute;
   color: #888;
-}
-
-.icon img {
-  width: 50px;
-  filter: grayscale(100%) contrast(120%) brightness(80%);
+  font-size: 28px;
 }
 
 .icon:hover {
   color: #00ffcc;
 }
 
-/* janela */
+/* JANELAS */
 .window {
-  width: 520px;
+  width: 500px;
   height: 400px;
   background: #0d0d0d;
   border: 1px solid #00ffcc;
-  box-shadow: 0 0 20px rgba(0,255,204,0.2);
   position: absolute;
   top: 80px;
   left: 80px;
@@ -58,7 +48,6 @@ body {
   flex-direction: column;
 }
 
-/* header */
 .header {
   background: #00ffcc;
   color: black;
@@ -68,36 +57,25 @@ body {
   justify-content: space-between;
 }
 
-/* botão fechar */
-.close {
-  cursor: pointer;
-}
-
-/* conteúdo */
 .content {
   padding: 10px;
   overflow-y: auto;
   flex: 1;
 }
 
-/* posts */
 .post {
   border-bottom: 1px dashed #333;
   margin-bottom: 10px;
   padding-bottom: 10px;
 }
 
-/* input */
 textarea {
   width: 100%;
   background: black;
   color: #00ffcc;
   border: 1px solid #00ffcc;
-  margin-top: 10px;
-  font-family: inherit;
 }
 
-/* botão */
 button {
   width: 100%;
   margin-top: 5px;
@@ -107,12 +85,6 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  background: #00ffcc;
-  color: black;
-}
-
-/* taskbar */
 .taskbar {
   position: absolute;
   bottom: 0;
@@ -120,14 +92,7 @@ button:hover {
   background: #0a0a0a;
   padding: 5px;
   border-top: 1px solid #00ffcc;
-  font-size: 14px;
 }
-
-/* glitch leve */
-.glitch {
-  text-shadow: 1px 0 #ff00c8, -1px 0 #00ffff;
-}
-
 </style>
 </head>
 
@@ -135,92 +100,112 @@ button:hover {
 
 <div class="desktop">
 
-  <!-- ícone -->
-  <div class="icon" style="top:40px; left:40px;" onclick="openWin()">
-    <img src="https://cdn-icons-png.flaticon.com/512/2965/2965567.png">
-    <div>memories</div>
-  </div>
+  <!-- ÍCONES -->
+  <div class="icon" style="top:40px; left:40px;" onclick="openWindow('memoria')">I</div>
+  <div class="icon" style="top:120px; left:40px;" onclick="openWindow('pensamentos')">II</div>
+  <div class="icon" style="top:200px; left:40px;" onclick="openWindow('erros')">III</div>
+  <div class="icon" style="top:280px; left:40px;" onclick="openWindow('vazio')">IV</div>
 
-  <!-- janela -->
-  <div class="window" id="win">
+  <!-- JANELA MEMORIA -->
+  <div class="window" id="memoria">
     <div class="header">
-      <span class="glitch">memory.log</span>
-      <span class="close" onclick="closeWin()">X</span>
+      memoria.log
+      <span onclick="closeWindow('memoria')">X</span>
     </div>
-
     <div class="content">
-      <div id="posts"></div>
-
-      <textarea id="input" placeholder="escreve..."></textarea>
-      <button onclick="addPost()">salvar</button>
+      <div id="memoriaPosts"></div>
+      <textarea id="memoriaInput"></textarea>
+      <button onclick="addPost('memoria')">salvar</button>
     </div>
   </div>
 
-  <!-- barra -->
-  <div class="taskbar">
-    system online // estado: instável
+  <!-- JANELA PENSAMENTOS -->
+  <div class="window" id="pensamentos">
+    <div class="header">
+      pensamentos.txt
+      <span onclick="closeWindow('pensamentos')">X</span>
+    </div>
+    <div class="content">
+      <div id="pensamentosPosts"></div>
+      <textarea id="pensamentosInput"></textarea>
+      <button onclick="addPost('pensamentos')">salvar</button>
+    </div>
   </div>
+
+  <!-- JANELA ERROS -->
+  <div class="window" id="erros">
+    <div class="header">
+      erros.sys
+      <span onclick="closeWindow('erros')">X</span>
+    </div>
+    <div class="content">
+      <div id="errosPosts"></div>
+      <textarea id="errosInput"></textarea>
+      <button onclick="addPost('erros')">salvar</button>
+    </div>
+  </div>
+
+  <!-- JANELA VAZIO -->
+  <div class="window" id="vazio">
+    <div class="header">
+      vazio.dat
+      <span onclick="closeWindow('vazio')">X</span>
+    </div>
+    <div class="content">
+      <div id="vazioPosts"></div>
+      <textarea id="vazioInput"></textarea>
+      <button onclick="addPost('vazio')">salvar</button>
+    </div>
+  </div>
+
+  <div class="taskbar">system online // estados fragmentados</div>
 
 </div>
 
 <script>
-const win = document.getElementById("win");
 
-/* abrir */
-function openWin() {
-  win.style.display = "flex";
+/* abrir/fechar */
+function openWindow(id) {
+  document.getElementById(id).style.display = "flex";
 }
 
-/* fechar */
-function closeWin() {
-  win.style.display = "none";
+function closeWindow(id) {
+  document.getElementById(id).style.display = "none";
 }
 
-/* criar post */
-function addPost() {
-  const text = document.getElementById("input").value;
+/* salvar posts */
+function addPost(tipo) {
+  const input = document.getElementById(tipo + "Input");
+  const posts = document.getElementById(tipo + "Posts");
+
+  const text = input.value;
   if (!text.trim()) return;
 
   const post = document.createElement("div");
   post.className = "post";
   post.innerText = text;
 
-  document.getElementById("posts").prepend(post);
+  posts.prepend(post);
 
-  let saved = JSON.parse(localStorage.getItem("posts") || "[]");
+  let saved = JSON.parse(localStorage.getItem(tipo) || "[]");
   saved.unshift(text);
-  localStorage.setItem("posts", JSON.stringify(saved));
+  localStorage.setItem(tipo, JSON.stringify(saved));
 
-  document.getElementById("input").value = "";
+  input.value = "";
 }
 
-/* carregar posts */
+/* carregar */
 window.onload = () => {
-  let saved = JSON.parse(localStorage.getItem("posts") || "[]");
-  saved.forEach(text => {
-    const post = document.createElement("div");
-    post.className = "post";
-    post.innerText = text;
-    document.getElementById("posts").appendChild(post);
+  ["memoria", "pensamentos", "erros", "vazio"].forEach(tipo => {
+    let saved = JSON.parse(localStorage.getItem(tipo) || "[]");
+    saved.forEach(text => {
+      const post = document.createElement("div");
+      post.className = "post";
+      post.innerText = text;
+      document.getElementById(tipo + "Posts").appendChild(post);
+    });
   });
 }
-
-/* arrastar janela */
-let isDown = false, offsetX, offsetY;
-
-document.querySelector(".header").onmousedown = (e) => {
-  isDown = true;
-  offsetX = win.offsetLeft - e.clientX;
-  offsetY = win.offsetTop - e.clientY;
-};
-
-document.onmouseup = () => isDown = false;
-
-document.onmousemove = (e) => {
-  if (!isDown) return;
-  win.style.left = e.clientX + offsetX + "px";
-  win.style.top = e.clientY + offsetY + "px";
-};
 </script>
 
 </body>
