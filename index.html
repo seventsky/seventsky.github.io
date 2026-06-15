@@ -1,212 +1,1708 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<title>system://core</title>
-
-<link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<title>NECRO//OS :: MOSTSERO CASEBUILD</title>
 <style>
-body {
-  margin: 0;
-  background: #050505;
-  font-family: 'VT323', monospace;
-  color: #00ffcc;
-  overflow: hidden;
+:root{
+  --bg:#05070a;
+  --bg2:#090d12;
+  --panel:#0c1117;
+  --panel2:#0f1620;
+  --line:#1c2a33;
+  --glow:#00ff9f;
+  --glow2:#7affc1;
+  --text:#c7d1d8;
+  --muted:#7f909d;
+  --danger:#ff4971;
+  --warn:#f7b955;
+  --accent:#57d7ff;
+  --shadow:0 0 18px rgba(0,255,159,.08), inset 0 0 24px rgba(0,255,159,.03);
+  --taskbar-h:46px;
+  --font:"Consolas","Cascadia Mono","Courier New",monospace;
 }
 
-.desktop {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
+*{box-sizing:border-box}
+
+html,body{
+  width:100%;
+  height:100%;
+  margin:0;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--font);
 }
 
-/* ÍCONES */
-.icon {
-  width: 80px;
-  text-align: center;
-  cursor: pointer;
-  position: absolute;
-  color: #888;
-  font-size: 28px;
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:repeating-linear-gradient(
+    to bottom,
+    rgba(0,255,159,.04) 0px,
+    rgba(0,255,159,.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index:999;
 }
 
-.icon:hover {
-  color: #00ffcc;
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at center, transparent 0%, rgba(0,0,0,.12) 60%, rgba(0,0,0,.45) 100%);
+  z-index:1000;
 }
 
-/* JANELAS */
-.window {
-  width: 500px;
-  height: 400px;
-  background: #0d0d0d;
-  border: 1px solid #00ffcc;
-  position: absolute;
-  top: 80px;
-  left: 80px;
-  display: none;
-  flex-direction: column;
+@keyframes flicker{
+  0%{opacity:1}
+  50%{opacity:.985}
+  100%{opacity:1}
+}
+body{animation:flicker .13s infinite}
+
+@keyframes glitch{
+  0%{transform:translate(0,0)}
+  25%{transform:translate(-1px,1px)}
+  50%{transform:translate(1px,-1px)}
+  75%{transform:translate(-1px,0)}
+  100%{transform:translate(0,0)}
+}
+.glitch{animation:glitch .16s linear 1}
+
+#boot{
+  position:fixed;
+  inset:0;
+  background:#000;
+  color:var(--glow);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:999999;
+  padding:24px;
 }
 
-.header {
-  background: #00ffcc;
-  color: black;
-  padding: 5px;
-  cursor: move;
-  display: flex;
-  justify-content: space-between;
+#bootFrame{
+  width:min(920px, 96vw);
+  max-height:78vh;
+  overflow:auto;
+  border:1px solid rgba(0,255,159,.2);
+  border-radius:12px;
+  background:rgba(0,0,0,.75);
+  box-shadow:0 0 24px rgba(0,255,159,.08);
+  padding:18px;
 }
 
-.content {
-  padding: 10px;
-  overflow-y: auto;
-  flex: 1;
+#boot pre{
+  margin:0;
+  white-space:pre;
+  overflow:visible;
+  font-size:14px;
+  line-height:1.12;
+  color:#96ffcb;
+  text-shadow:0 0 10px rgba(0,255,159,.25);
 }
 
-.post {
-  border-bottom: 1px dashed #333;
-  margin-bottom: 10px;
-  padding-bottom: 10px;
+#boot .hint{
+  margin-top:16px;
+  font-size:12px;
+  color:var(--muted);
 }
 
-textarea {
-  width: 100%;
-  background: black;
-  color: #00ffcc;
-  border: 1px solid #00ffcc;
+#wallpaper{
+  position:fixed;
+  inset:0 0 var(--taskbar-h) 0;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(0,255,159,.05), transparent 30%),
+    linear-gradient(180deg,#05070a 0%,#091018 55%,#05070a 100%);
 }
 
-button {
-  width: 100%;
-  margin-top: 5px;
-  background: black;
-  color: #00ffcc;
-  border: 1px solid #00ffcc;
-  cursor: pointer;
+#wallpaper .bgtext{
+  position:absolute;
+  right:4%;
+  top:6%;
+  white-space:pre;
+  color:rgba(0,255,159,.08);
+  font-size:12px;
+  line-height:1.06;
+  user-select:none;
 }
 
-.taskbar {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  background: #0a0a0a;
-  padding: 5px;
-  border-top: 1px solid #00ffcc;
+#desktop{
+  position:absolute;
+  inset:0 0 var(--taskbar-h) 0;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,92px);
+  grid-auto-rows:92px;
+  align-content:start;
+  gap:14px;
+  padding:18px;
+  z-index:2;
+}
+
+.icon{
+  width:86px;
+  height:86px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  border-radius:10px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:.18s;
+  text-align:center;
+  user-select:none;
+  padding:6px;
+}
+.icon:hover{
+  background:rgba(0,255,159,.07);
+  border-color:rgba(0,255,159,.15);
+  transform:translateY(-2px);
+}
+.icon .i{font-size:26px;margin-bottom:6px}
+.icon .t{font-size:11px;line-height:1.08;color:#d7fff0}
+
+.window{
+  position:absolute;
+  width:760px;
+  height:460px;
+  display:none;
+  flex-direction:column;
+  background:linear-gradient(180deg, rgba(12,17,23,.98), rgba(8,12,16,.98));
+  border:1px solid rgba(0,255,159,.18);
+  border-radius:12px;
+  overflow:hidden;
+  min-width:360px;
+  min-height:240px;
+  resize:both;
+  box-shadow:0 0 18px rgba(0,255,159,.08), inset 0 0 24px rgba(0,255,159,.03);
+}
+.window.active{
+  border-color:rgba(0,255,159,.35);
+  box-shadow:0 0 0 1px rgba(0,255,159,.08), 0 0 28px rgba(0,255,159,.11), inset 0 0 24px rgba(0,255,159,.03);
+}
+
+.titlebar{
+  height:38px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 8px 0 12px;
+  background:linear-gradient(180deg,#101821,#0a1016);
+  border-bottom:1px solid rgba(255,255,255,.05);
+  user-select:none;
+  cursor:move;
+}
+.title-left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+}
+.title-icon{
+  width:18px;
+  color:var(--glow);
+  text-align:center;
+}
+.title-text{
+  font-size:13px;
+  color:#e8fff5;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.title-right{
+  display:flex;
+  gap:4px;
+}
+.win-btn{
+  width:30px;
+  height:26px;
+  border:none;
+  background:#111821;
+  color:#9ac7b3;
+  border-radius:6px;
+  cursor:pointer;
+  font-family:var(--font);
+}
+.win-btn:hover{background:#1a2430;color:#e8fff5}
+.win-btn.close:hover{background:#36131a;color:#ffd1dc}
+
+.content{
+  flex:1;
+  overflow:auto;
+  padding:10px;
+}
+
+.taskbar{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:var(--taskbar-h);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 8px;
+  background:linear-gradient(180deg,#0a0e13,#080b0f);
+  border-top:1px solid rgba(255,255,255,.05);
+  z-index:5000;
+}
+.start{
+  width:36px;
+  height:36px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#0e151d;
+  border:1px solid rgba(0,255,159,.12);
+  border-radius:8px;
+  cursor:pointer;
+  color:var(--glow);
+}
+.start:hover{background:#141d26}
+
+#startMenu{
+  position:fixed;
+  left:8px;
+  bottom:54px;
+  width:300px;
+  background:linear-gradient(180deg, rgba(12,17,23,.98), rgba(8,11,16,.98));
+  border:1px solid rgba(0,255,159,.18);
+  border-radius:12px;
+  box-shadow:0 0 18px rgba(0,255,159,.08);
+  display:none;
+  overflow:hidden;
+  z-index:6000;
+}
+#startMenu .menu-head{
+  padding:12px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+#startMenu .menu-list{
+  max-height:380px;
+  overflow:auto;
+}
+.menu-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  cursor:pointer;
+  border-bottom:1px solid rgba(255,255,255,.03);
+}
+.menu-item:hover{background:rgba(0,255,159,.06)}
+
+.tasks{
+  flex:1;
+  display:flex;
+  gap:6px;
+  overflow:auto;
+}
+.task{
+  min-width:44px;
+  height:34px;
+  padding:0 10px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#0f151c;
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:8px;
+  cursor:pointer;
+}
+.task.active{
+  background:rgba(0,255,159,.12);
+  border-color:rgba(0,255,159,.23);
+}
+.task .tt{font-size:12px}
+
+#sysbar{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  color:#d0eadf;
+  font-size:12px;
+}
+
+.panel{
+  background:rgba(255,255,255,.02);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:10px;
+  padding:10px;
+}
+
+.row{display:flex;gap:10px}
+.col{display:flex;flex-direction:column;gap:10px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+
+button,input,textarea,select{
+  width:100%;
+  background:#071017;
+  color:var(--glow);
+  border:1px solid rgba(0,255,159,.18);
+  border-radius:8px;
+  padding:8px 10px;
+  font-family:var(--font);
+  font-size:13px;
+  outline:none;
+}
+button{cursor:pointer}
+button:hover{background:#0d1720}
+textarea{resize:vertical}
+
+.small{font-size:12px;color:var(--muted)}
+.badge{
+  display:inline-block;
+  padding:3px 8px;
+  border-radius:999px;
+  border:1px solid rgba(0,255,159,.15);
+  background:rgba(0,255,159,.06);
+  font-size:11px;
+  color:#cffff0;
+}
+
+.log{
+  background:#03070b;
+  border:1px solid rgba(0,255,159,.12);
+  border-radius:8px;
+  padding:10px;
+  min-height:180px;
+  max-height:280px;
+  overflow:auto;
+  white-space:pre-wrap;
+  line-height:1.35;
+  font-size:12px;
+}
+
+.terminal{
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  background:#020507;
+  border:1px solid rgba(0,255,159,.14);
+  border-radius:8px;
+  padding:8px;
+}
+.term-out{
+  flex:1;
+  overflow:auto;
+  white-space:pre-wrap;
+  font-size:13px;
+  line-height:1.35;
+  padding:6px;
+  color:#95ffc8;
+}
+.term-line{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  border-top:1px solid rgba(255,255,255,.04);
+  padding-top:8px;
+}
+.term-prompt{white-space:nowrap;color:#7affc1}
+.term-input{
+  border:none;
+  background:transparent;
+  color:#e7fff4;
+  padding:0;
+}
+
+.file-list{
+  background:#050a0f;
+  border:1px solid rgba(0,255,159,.12);
+  border-radius:8px;
+  padding:6px;
+  max-height:280px;
+  overflow:auto;
+}
+.file-item{
+  padding:7px 8px;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:12px;
+}
+.file-item:hover{background:rgba(0,255,159,.08)}
+
+.kv{
+  width:100%;
+  border-collapse:collapse;
+  font-size:12px;
+}
+.kv td{
+  border-bottom:1px solid rgba(255,255,255,.05);
+  padding:6px 4px;
+}
+.kv td:first-child{color:var(--muted);width:150px}
+
+.note-toast{
+  position:fixed;
+  right:18px;
+  bottom:-120px;
+  width:270px;
+  background:linear-gradient(180deg,#0a1016,#080c11);
+  border:1px solid rgba(0,255,159,.18);
+  border-radius:10px;
+  padding:10px;
+  opacity:0;
+  transition:.35s;
+  z-index:7000;
+}
+.note-toast.show{
+  bottom:60px;
+  opacity:1;
+}
+
+.progress{
+  height:10px;
+  background:#071017;
+  border:1px solid rgba(0,255,159,.1);
+  border-radius:999px;
+  overflow:hidden;
+}
+.progress > div{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, rgba(0,255,159,.2), rgba(0,255,159,.75));
+  transition:.2s;
+}
+
+.chat-list{
+  background:#050a0f;
+  border:1px solid rgba(0,255,159,.12);
+  border-radius:8px;
+  padding:6px;
+  max-height:320px;
+  overflow:auto;
+}
+.chat-item{
+  padding:8px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  cursor:pointer;
+}
+.chat-item:hover{background:rgba(0,255,159,.06)}
+
+.msg-view{
+  background:#04080c;
+  border:1px solid rgba(0,255,159,.12);
+  border-radius:8px;
+  padding:10px;
+  min-height:320px;
+  white-space:pre-wrap;
+  overflow:auto;
+  font-size:12px;
+  line-height:1.4;
+}
+
+.board{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+.card{
+  background:#071017;
+  border:1px solid rgba(0,255,159,.12);
+  border-radius:10px;
+  padding:10px;
+}
+.card h4{
+  margin:0 0 8px;
+  font-size:13px;
+  color:#dcfff1;
+}
+.card p{
+  margin:0 0 6px;
+  font-size:12px;
+  color:#b9c7cf;
+}
+
+.mail-item{
+  padding:8px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  cursor:pointer;
+}
+.mail-item:hover{background:rgba(0,255,159,.06)}
+
+.process-item{
+  display:flex;
+  justify-content:space-between;
+  padding:7px 8px;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  font-size:12px;
+}
+
+.ascii-box{
+  background:#04080d;
+  border:1px solid rgba(0,255,159,.12);
+  border-radius:8px;
+  padding:10px;
+  overflow:auto;
+  white-space:pre;
+  line-height:1.08;
+  font-size:12px;
+  min-height:250px;
 }
 </style>
 </head>
-
 <body>
 
-<div class="desktop">
+<div id="boot">
+  <div id="bootFrame">
+<pre>
+███╗   ██╗███████╗ ██████╗██████╗  ██████╗     ██████╗ ███████╗
+████╗  ██║██╔════╝██╔════╝██╔══██╗██╔═══██╗   ██╔═══██╗██╔════╝
+██╔██╗ ██║█████╗  ██║     ██████╔╝██║   ██║   ██║   ██║███████╗
+██║╚██╗██║██╔══╝  ██║     ██╔══██╗██║   ██║   ██║   ██║╚════██║
+██║ ╚████║███████╗╚██████╗██║  ██║╚██████╔╝   ╚██████╔╝███████║
+╚═╝  ╚═══╝╚══════╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝     ╚═════╝ ╚══════╝
 
-  <!-- ÍCONES -->
-  <div class="icon" style="top:40px; left:40px;" onclick="openWindow('memoria')">I</div>
-  <div class="icon" style="top:120px; left:40px;" onclick="openWindow('pensamentos')">II</div>
-  <div class="icon" style="top:200px; left:40px;" onclick="openWindow('erros')">III</div>
-  <div class="icon" style="top:280px; left:40px;" onclick="openWindow('vazio')">IV</div>
+===============================================================
+:: MOSTSERO INVESTIGATION BUILD
+:: case file loaded    : CAROLINA STOZZO
+:: access level        : restricted
+:: messenger sync      : restored
+:: hidden archive      : mounted
+:: local daemon        : watching
+===============================================================
 
-  <!-- JANELA MEMORIA -->
-  <div class="window" id="memoria">
-    <div class="header">
-      memoria.log
-      <span onclick="closeWindow('memoria')">X</span>
-    </div>
-    <div class="content">
-      <div id="memoriaPosts"></div>
-      <textarea id="memoriaInput"></textarea>
-      <button onclick="addPost('memoria')">salvar</button>
-    </div>
+             ________________________________
+            /                                \
+           |   A M A N H E C E R  //  04:35   |
+           |__________________________________|
+                  \  disappeared /
+
+
+[ sistema de reconstrucao narrativa ]
+[ use os arquivos, mensagens e logs para montar o caso ]
+</pre>
   </div>
+  <div class="hint">clique para iniciar</div>
+</div>
 
-  <!-- JANELA PENSAMENTOS -->
-  <div class="window" id="pensamentos">
-    <div class="header">
-      pensamentos.txt
-      <span onclick="closeWindow('pensamentos')">X</span>
-    </div>
-    <div class="content">
-      <div id="pensamentosPosts"></div>
-      <textarea id="pensamentosInput"></textarea>
-      <button onclick="addPost('pensamentos')">salvar</button>
-    </div>
+<div id="wallpaper">
+<pre class="bgtext">
+Mostsero nunca dorme.
+Algumas pessoas apenas somem.
+Outras continuam falando pelos arquivos.
+</pre>
+</div>
+
+<div id="desktop"></div>
+<div id="toast" class="note-toast"></div>
+
+<div id="startMenu">
+  <div class="menu-head">
+    <div><strong>NECRO//OS</strong> :: Mostsero Casebuild</div>
+    <div class="small">arquivo, rastreio, mensagens, reconstrução</div>
   </div>
+  <div class="menu-list" id="startMenuList"></div>
+</div>
 
-  <!-- JANELA ERROS -->
-  <div class="window" id="erros">
-    <div class="header">
-      erros.sys
-      <span onclick="closeWindow('erros')">X</span>
-    </div>
-    <div class="content">
-      <div id="errosPosts"></div>
-      <textarea id="errosInput"></textarea>
-      <button onclick="addPost('erros')">salvar</button>
-    </div>
+<div class="taskbar">
+  <div class="start" id="startBtn">◈</div>
+  <div class="tasks" id="tasks"></div>
+  <div id="sysbar">
+    <div id="netMini">CASE: active</div>
+    <div id="clock"></div>
   </div>
-
-  <!-- JANELA VAZIO -->
-  <div class="window" id="vazio">
-    <div class="header">
-      vazio.dat
-      <span onclick="closeWindow('vazio')">X</span>
-    </div>
-    <div class="content">
-      <div id="vazioPosts"></div>
-      <textarea id="vazioInput"></textarea>
-      <button onclick="addPost('vazio')">salvar</button>
-    </div>
-  </div>
-
-  <div class="taskbar">system online // estados fragmentados</div>
-
 </div>
 
 <script>
+const OS = {
+  z: 20,
+  apps: {},
+  tasks: {},
+  windows: {},
+  fs: {},
+  logs: [],
+  mail: [],
+  processes: [],
+  drag: {active:false, win:null, dx:0, dy:0},
+  currentDir: "/",
+  state: {
+    notes: `CAPÍTULO UM
 
-/* abrir/fechar */
-function openWindow(id) {
-  document.getElementById(id).style.display = "flex";
+Ela era síntese pura, a resolução do problema inexistente.
+Talvez amar fosse apenas outra forma de errar com método.
+
+Carolina sempre parecia maior que o lugar onde estava.
+Mesmo quando sumia, permanecia ocupando tudo.`,
+    vaultText: "",
+    clicker: 0
+  },
+  networkStats: {rx:0, tx:0, threat:"low"},
+  scannerRunning:false
+};
+
+const ASCII = {
+  sigil:
+`        .       .
+     .:::::::::::::.
+   .::::::'   '::::::.
+  ::::::  /\ /\  ::::::
+  ::::::  \/ \/  ::::::
+   '::::::.   .::::::'
+      ':::::::::::'
+          ':::'
+`,
+  eye:
+`   ______________________
+  /                      \\
+ |   someone is watching  |
+ |________________________|
+        \\   ^__^
+         \\  (oo)\\_______
+            (__)\\       )\\/\\
+                ||----w |
+                ||     ||
+`,
+  skyline:
+`        | |      | |
+     ___|_|______|_|___
+    /__________________\\
+    ||  Mostsero  03:17||
+    || [] [] [] [] [] ||
+    ||_________________||
+`
+};
+
+function nowTime(){
+  return new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+}
+function nowShort(){
+  return new Date().toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"});
+}
+function updateClock(){
+  document.getElementById("clock").textContent = nowShort();
+}
+setInterval(updateClock,1000);
+updateClock();
+
+function glitchBody(){
+  document.body.classList.add("glitch");
+  setTimeout(() => document.body.classList.remove("glitch"), 130);
+}
+function toast(text){
+  const t = document.getElementById("toast");
+  t.textContent = text;
+  t.classList.add("show");
+  glitchBody();
+  setTimeout(() => t.classList.remove("show"), 3500);
+}
+function log(msg){
+  const line = "[" + nowTime() + "] " + msg;
+  OS.logs.unshift(line);
+  OS.logs = OS.logs.slice(0,300);
+  refreshLogs();
 }
 
-function closeWindow(id) {
-  document.getElementById(id).style.display = "none";
+function seedFS(){
+  OS.fs = {
+    "/": {type:"dir", children:["home","evidence","archive","chat","mail","sys","ascii","vault"]},
+    "/home": {type:"dir", children:["julieta_notes.txt","draft_02.txt"]},
+    "/home/julieta_notes.txt": {type:"file", content:OS.state.notes},
+    "/home/draft_02.txt": {type:"file", content:`Acho que vão entender tudo errado.
+O que me sufoca é a ausência de informações e ter informações demais.`},
+
+    "/evidence": {type:"dir", children:["photo_amanhecer.txt","lab_result.txt","blood_note.txt","coach_photo.txt"]},
+    "/evidence/photo_amanhecer.txt": {type:"file", content:`[foto]
+Carolina saindo da Amanhecer com o treinador Marcelo Mitiva.
+Horário aproximado: 05:58
+Origem: Kaiser`},
+    "/evidence/lab_result.txt": {type:"file", content:`Laboratório de análises clínicas
+Resultado: excluído o vínculo de paternidade entre Geizon Stozzo e Carolina Stozzo.
+Observação: compatibilidade parcial encontrada com outra amostra masculina não identificada.`},
+    "/evidence/blood_note.txt": {type:"file", content:`O sangue encontrado no armário de Julieta corresponde a Carolina.
+Julieta alegou que a amostra foi obtida com consentimento para um exame.`},
+    "/evidence/coach_photo.txt": {type:"file", content:`[memória]
+Marcelo Mitiva aparentava saber mais do que disse.
+Reagiu ao sangue como quem já esperava a descoberta.`},
+
+    "/archive": {type:"dir", children:["interrogatorio_julieta.txt","interrogatorio_diana.txt","case_summary.txt"]},
+    "/archive/interrogatorio_julieta.txt": {type:"file", content:`Delegado Macedo:
+"Temos algumas perguntas sobre o desaparecimento de Carolina Stozzo."
+
+Julieta:
+"Eu queria saber dela, mas sempre fui péssima em achá-la."
+
+Nota:
+Julieta demonstrou forte reação ao ser informada do sangue encontrado em seu armário.`},
+    "/archive/interrogatorio_diana.txt": {type:"file", content:`Diana Mariz:
+"Ela parecia abraçar o mundo na maior parte do tempo.
+A retribuição foi meio injusta."
+
+Diana também afirmou que Carolina citou conflitos familiares e uma possível traição.`},
+    "/archive/case_summary.txt": {type:"file", content:`Caso: desaparecimento de Carolina Stozzo
+Local: boate Amanhecer
+Último horário confirmado: madrugada, entre 04:35 e 06:16
+Pessoas de interesse:
+- Julieta Argy
+- Diana Mariz
+- Kaiser Santos
+- Elizabeth "Betty"
+- Bruno
+- Marcelo Mitiva
+- Geizon Stozzo`},
+
+    "/chat": {type:"dir", children:["group_thread.txt","betty_diana.txt","julieta_carolina.txt"]},
+    "/chat/group_thread.txt": {type:"file", content:`[grupo: toupeiras]
+Kaiser: consegui a lista de quem tava lá
+Betty: não é possível que realmente achem que foi você
+Diana: alguém está escondendo alguma coisa
+Julieta: eu vejo vocês depois`},
+    "/chat/betty_diana.txt": {type:"file", content:`Betty: você não me responde desde a aula
+Betty: onde você tava?
+Diana: tomei remédio
+Diana: acho que o senhor Stozzo sabe mais do que conta`},
+    "/chat/julieta_carolina.txt": {type:"file", content:`Carolina: você exagera quando é confrontada
+Julieta: nossa amizade era ótima até tomarmos atitudes impossíveis de desfazer`},
+
+    "/mail": {type:"dir", children:["inbox_01.msg","inbox_02.msg","inbox_03.msg"]},
+    "/mail/inbox_01.msg": {type:"file", content:`de: kaiser@mesh
+assunto: foto
+
+Julie,
+te mandei a imagem. ela saiu com ele.
+não apaga isso.`},
+    "/mail/inbox_02.msg": {type:"file", content:`de: clinic@lab
+assunto: laboratório de análises clínicas
+
+resultado disponível para consulta.`},
+    "/mail/inbox_03.msg": {type:"file", content:`de: unknown@relay
+assunto: você está olhando para o lugar errado
+
+o desaparecimento começou antes da boate.`},
+
+    "/sys": {type:"dir", children:["process.table","network.state","build.info"]},
+    "/sys/process.table": {type:"file", content:`messenger.core
+archive.reader
+wm.core
+watcher.net
+mail.daemon`},
+    "/sys/network.state": {type:"file", content:`threat=medium
+rx=0
+tx=0`},
+    "/sys/build.info": {type:"file", content:`NECRO//OS Mostsero Build
+case mode enabled`},
+
+    "/ascii": {type:"dir", children:["sigil.asc","eye.asc","skyline.asc"]},
+    "/ascii/sigil.asc": {type:"file", content:ASCII.sigil},
+    "/ascii/eye.asc": {type:"file", content:ASCII.eye},
+    "/ascii/skyline.asc": {type:"file", content:ASCII.skyline},
+
+    "/vault": {type:"dir", children:["hidden_01.enc","fragments.enc"]},
+    "/vault/hidden_01.enc": {type:"file", content:"Q2Fyb2xpbmEgbmFvIHN1bWl1IHBvciBhY2Fzby4="},
+    "/vault/fragments.enc": {type:"file", content:"SmFjb2JpcyBkbyBjYXNvIG5hbyBiYXRlbSBjb20gYSBwb2xpY2lhLg=="}
+  };
 }
 
-/* salvar posts */
-function addPost(tipo) {
-  const input = document.getElementById(tipo + "Input");
-  const posts = document.getElementById(tipo + "Posts");
-
-  const text = input.value;
-  if (!text.trim()) return;
-
-  const post = document.createElement("div");
-  post.className = "post";
-  post.innerText = text;
-
-  posts.prepend(post);
-
-  let saved = JSON.parse(localStorage.getItem(tipo) || "[]");
-  saved.unshift(text);
-  localStorage.setItem(tipo, JSON.stringify(saved));
-
-  input.value = "";
+function seedMail(){
+  OS.mail = [
+    {
+      id:id(),
+      from:"kaiser@mesh",
+      subject:"a foto",
+      time:nowTime(),
+      body:"Eu mandei a imagem. Carolina saiu da Amanhecer com o treinador. Isso muda tudo."
+    },
+    {
+      id:id(),
+      from:"clinic@lab",
+      subject:"resultado disponível",
+      time:nowTime(),
+      body:"O resultado do exame foi liberado no sistema. Acesso solicitado fora do horário padrão."
+    },
+    {
+      id:id(),
+      from:"unknown@relay",
+      subject:"você está olhando para o lugar errado",
+      time:nowTime(),
+      body:"Se quiser entender o que aconteceu com Carolina, comece pelos conflitos da família. A boate não foi o início."
+    }
+  ];
 }
 
-/* carregar */
-window.onload = () => {
-  ["memoria", "pensamentos", "erros", "vazio"].forEach(tipo => {
-    let saved = JSON.parse(localStorage.getItem(tipo) || "[]");
-    saved.forEach(text => {
-      const post = document.createElement("div");
-      post.className = "post";
-      post.innerText = text;
-      document.getElementById(tipo + "Posts").appendChild(post);
-    });
+function seedProcesses(){
+  OS.processes = [
+    {name:"wm.core", cpu:2, mem:82, pid:114},
+    {name:"messenger.core", cpu:1, mem:41, pid:221},
+    {name:"archive.reader", cpu:4, mem:58, pid:307},
+    {name:"watcher.net", cpu:6, mem:73, pid:411},
+    {name:"mail.daemon", cpu:1, mem:30, pid:512}
+  ];
+}
+
+function id(){
+  return Math.random().toString(36).slice(2,10);
+}
+
+function getNode(path){ return OS.fs[path] || null; }
+
+function normalizePath(path){
+  if(!path) return OS.currentDir;
+  if(path === ".") return OS.currentDir;
+  if(path === "/") return "/";
+  let full = path.startsWith("/") ? path : (OS.currentDir === "/" ? "/" + path : OS.currentDir + "/" + path);
+  const parts = [];
+  full.split("/").forEach(p => {
+    if(!p || p === ".") return;
+    if(p === "..") parts.pop();
+    else parts.push(p);
+  });
+  return "/" + parts.join("/");
+}
+
+function listDir(path){
+  const node = getNode(normalizePath(path));
+  if(!node || node.type !== "dir") return null;
+  return node.children.slice();
+}
+function readFile(path){
+  const node = getNode(normalizePath(path));
+  if(!node || node.type !== "file") return null;
+  return node.content;
+}
+function writeFile(path, content){
+  const p = normalizePath(path);
+  const parts = p.split("/").filter(Boolean);
+  const name = parts.pop();
+  const parent = "/" + parts.join("/");
+  const parentNode = getNode(parent || "/");
+  if(!parentNode || parentNode.type !== "dir") return false;
+  if(!OS.fs[p]){
+    OS.fs[p] = {type:"file", content};
+    parentNode.children.push(name);
+  }else{
+    OS.fs[p].content = content;
+  }
+  return true;
+}
+
+function registerApp(app){
+  OS.apps[app.id] = app;
+}
+
+function createIcon(app){
+  const d = document.createElement("div");
+  d.className = "icon";
+  d.innerHTML = `<div class="i">${app.icon}</div><div class="t">${app.title}</div>`;
+  d.onclick = () => openApp(app.id);
+  document.getElementById("desktop").appendChild(d);
+}
+
+function createStartItem(app){
+  const d = document.createElement("div");
+  d.className = "menu-item";
+  d.innerHTML = `<div>${app.icon}</div><div>${app.title}</div>`;
+  d.onclick = () => {
+    openApp(app.id);
+    toggleStart(false);
+  };
+  document.getElementById("startMenuList").appendChild(d);
+}
+
+function createWindow(app){
+  const w = document.createElement("div");
+  w.className = "window";
+  w.id = "win-" + app.id;
+  w.style.left = (100 + Math.floor(Math.random()*140)) + "px";
+  w.style.top = (70 + Math.floor(Math.random()*80)) + "px";
+  w.innerHTML = `
+    <div class="titlebar">
+      <div class="title-left">
+        <div class="title-icon">${app.icon}</div>
+        <div class="title-text">${app.title}</div>
+      </div>
+      <div class="title-right">
+        <button class="win-btn min">_</button>
+        <button class="win-btn max">□</button>
+        <button class="win-btn close">x</button>
+      </div>
+    </div>
+    <div class="content"></div>
+  `;
+  document.body.appendChild(w);
+  OS.windows[app.id] = w;
+  const content = w.querySelector(".content");
+  content.innerHTML = app.render ? app.render() : "";
+  bindWindowControls(app.id,w);
+  dragWindow(w);
+  if(app.onMount) app.onMount(w);
+}
+
+function bindWindowControls(id,w){
+  w.querySelector(".min").onclick = e => {
+    e.stopPropagation();
+    minimizeApp(id);
+  };
+  w.querySelector(".close").onclick = e => {
+    e.stopPropagation();
+    closeApp(id);
+  };
+  w.querySelector(".max").onclick = e => {
+    e.stopPropagation();
+    toggleMaximize(w);
+  };
+  w.addEventListener("mousedown",() => focusWindow(w));
+}
+
+function toggleMaximize(w){
+  if(w.dataset.max === "1"){
+    w.dataset.max = "0";
+    w.style.left = w.dataset.prevLeft;
+    w.style.top = w.dataset.prevTop;
+    w.style.width = w.dataset.prevWidth;
+    w.style.height = w.dataset.prevHeight;
+  }else{
+    w.dataset.prevLeft = w.style.left;
+    w.dataset.prevTop = w.style.top;
+    w.dataset.prevWidth = w.style.width || (w.offsetWidth + "px");
+    w.dataset.prevHeight = w.style.height || (w.offsetHeight + "px");
+    w.dataset.max = "1";
+    w.style.left = "10px";
+    w.style.top = "10px";
+    w.style.width = (window.innerWidth - 20) + "px";
+    w.style.height = (window.innerHeight - 66) + "px";
+  }
+  focusWindow(w);
+}
+
+function dragWindow(w){
+  const bar = w.querySelector(".titlebar");
+  bar.addEventListener("mousedown", e => {
+    if(e.target.closest(".win-btn")) return;
+    if(w.dataset.max === "1") return;
+    OS.drag.active = true;
+    OS.drag.win = w;
+    OS.drag.dx = e.clientX - w.offsetLeft;
+    OS.drag.dy = e.clientY - w.offsetTop;
+    focusWindow(w);
   });
 }
-</script>
+document.addEventListener("mousemove", e => {
+  if(!OS.drag.active || !OS.drag.win) return;
+  OS.drag.win.style.left = (e.clientX - OS.drag.dx) + "px";
+  OS.drag.win.style.top = (e.clientY - OS.drag.dy) + "px";
+});
+document.addEventListener("mouseup", () => {
+  OS.drag.active = false;
+  OS.drag.win = null;
+});
 
+function focusWindow(w){
+  OS.z++;
+  document.querySelectorAll(".window").forEach(x => x.classList.remove("active"));
+  w.classList.add("active");
+  w.style.zIndex = OS.z;
+}
+
+function addTask(app){
+  if(OS.tasks[app.id]) return;
+  const t = document.createElement("div");
+  t.className = "task";
+  t.id = "task-" + app.id;
+  t.innerHTML = `<div>${app.icon}</div><div class="tt">${app.title}</div>`;
+  t.onclick = () => {
+    const win = OS.windows[app.id];
+    if(win.style.display === "none") openApp(app.id);
+    else minimizeApp(app.id);
+  };
+  document.getElementById("tasks").appendChild(t);
+  OS.tasks[app.id] = t;
+}
+function syncTaskState(id){
+  Object.values(OS.tasks).forEach(t => t.classList.remove("active"));
+  const w = OS.windows[id];
+  if(w && w.style.display !== "none" && OS.tasks[id]) OS.tasks[id].classList.add("active");
+}
+function openApp(id){
+  const app = OS.apps[id];
+  const w = OS.windows[id];
+  if(!app || !w) return;
+  w.style.display = "flex";
+  addTask(app);
+  focusWindow(w);
+  syncTaskState(id);
+  if(app.onOpen) app.onOpen(w);
+  glitchBody();
+}
+function minimizeApp(id){
+  const w = OS.windows[id];
+  if(!w) return;
+  w.style.display = "none";
+  if(OS.tasks[id]) OS.tasks[id].classList.remove("active");
+}
+function closeApp(id){
+  minimizeApp(id);
+}
+
+function toggleStart(force){
+  const menu = document.getElementById("startMenu");
+  const next = typeof force === "boolean" ? force : menu.style.display !== "block";
+  menu.style.display = next ? "block" : "none";
+}
+document.getElementById("startBtn").onclick = e => {
+  e.stopPropagation();
+  toggleStart();
+};
+document.addEventListener("click", e => {
+  if(!e.target.closest("#startMenu") && !e.target.closest("#startBtn")) toggleStart(false);
+});
+
+function refreshLogs(){
+  const box = document.getElementById("log-output");
+  if(box) box.textContent = OS.logs.join("\n");
+}
+
+function refreshFilesUI(){
+  const list = document.getElementById("fileBrowserList");
+  if(!list) return;
+  list.innerHTML = "";
+  const items = listDir(OS.currentDir) || [];
+  if(OS.currentDir !== "/"){
+    const up = document.createElement("div");
+    up.className = "file-item";
+    up.textContent = "[..]";
+    up.onclick = () => {
+      OS.currentDir = normalizePath("..");
+      refreshFilesUI();
+    };
+    list.appendChild(up);
+  }
+  items.forEach(name => {
+    const p = OS.currentDir === "/" ? "/" + name : OS.currentDir + "/" + name;
+    const node = getNode(p);
+    const el = document.createElement("div");
+    el.className = "file-item";
+    el.textContent = (node.type === "dir" ? "DIR  " : "FILE ") + name;
+    el.onclick = () => {
+      if(node.type === "dir"){
+        OS.currentDir = p;
+        refreshFilesUI();
+      }else{
+        document.getElementById("fileViewer").value = node.content;
+        document.getElementById("fileViewer").dataset.path = p;
+        document.getElementById("filePath").textContent = p;
+      }
+    };
+    list.appendChild(el);
+  });
+  document.getElementById("fileCurrentPath").textContent = OS.currentDir;
+}
+
+function refreshProcessUI(){
+  const box = document.getElementById("procList");
+  if(!box) return;
+  box.innerHTML = "";
+  OS.processes.forEach(p => {
+    const el = document.createElement("div");
+    el.className = "process-item";
+    el.innerHTML = `<span>${p.pid} :: ${p.name}</span><span>CPU ${p.cpu}% | MEM ${p.mem}MB</span>`;
+    box.appendChild(el);
+  });
+}
+
+function updateMonitorUI(){
+  const cpu = 8 + Math.floor(Math.random()*20);
+  const mem = 32 + Math.floor(Math.random()*28);
+  OS.networkStats.rx += Math.floor(Math.random()*3);
+  OS.networkStats.tx += Math.floor(Math.random()*3);
+
+  const bars = {
+    monCpuBar: cpu,
+    monMemBar: mem,
+    monRxBar: Math.min(100, OS.networkStats.rx % 101),
+    monTxBar: Math.min(100, OS.networkStats.tx % 101)
+  };
+  Object.entries(bars).forEach(([id,val]) => {
+    const el = document.getElementById(id);
+    if(el) el.style.width = val + "%";
+  });
+
+  const s = document.getElementById("monitorStats");
+  if(s){
+    s.innerHTML = `
+      <tr><td>cpu load</td><td>${cpu}%</td></tr>
+      <tr><td>memory pressure</td><td>${mem}%</td></tr>
+      <tr><td>rx packets</td><td>${OS.networkStats.rx}</td></tr>
+      <tr><td>tx packets</td><td>${OS.networkStats.tx}</td></tr>
+      <tr><td>case threat</td><td>${OS.networkStats.threat}</td></tr>
+    `;
+  }
+
+  const netMini = document.getElementById("netMini");
+  netMini.textContent = "CASE: " + OS.networkStats.threat + " | RX " + OS.networkStats.rx + " | TX " + OS.networkStats.tx;
+}
+setInterval(updateMonitorUI,2000);
+
+function renderMail(){
+  const list = document.getElementById("mailList");
+  const body = document.getElementById("mailBody");
+  if(!list || !body) return;
+  list.innerHTML = "";
+  OS.mail.forEach(m => {
+    const el = document.createElement("div");
+    el.className = "mail-item";
+    el.innerHTML = `<div><strong>${m.subject}</strong></div><div class="small">${m.from} :: ${m.time}</div>`;
+    el.onclick = () => {
+      body.value = "de: " + m.from + "\nassunto: " + m.subject + "\nhora: " + m.time + "\n\n" + m.body;
+    };
+    list.appendChild(el);
+  });
+  if(OS.mail[0]){
+    body.value = "de: " + OS.mail[0].from + "\nassunto: " + OS.mail[0].subject + "\nhora: " + OS.mail[0].time + "\n\n" + OS.mail[0].body;
+  }
+}
+
+function renderMessenger(){
+  const threads = [
+    {
+      title:"grupo :: toupeiras",
+      body:`Kaiser: consegui a lista de quem tava lá.
+Betty: não é possível que realmente achem que foi você.
+Diana: alguém está escondendo alguma coisa.
+Julieta: eu vejo vocês depois.
+Diana: o senhor Stozzo sabe mais do que conta.`
+    },
+    {
+      title:"Betty <-> Diana",
+      body:`Betty: você não me responde desde a aula.
+Diana: tomei remédio.
+Betty: isso não é resposta.
+Diana: eu acho que o pai dela sabe mais do que expõe.`
+    },
+    {
+      title:"Julieta <-> Carolina",
+      body:`Carolina: você exagera quando é confrontada.
+Julieta: nossa amizade era ótima até tomarmos atitudes impossíveis de desfazer.
+Carolina: eu nunca disse que largaria ele.`
+    }
+  ];
+
+  const list = document.getElementById("chatList");
+  const view = document.getElementById("chatView");
+  if(!list || !view) return;
+  list.innerHTML = "";
+  threads.forEach(t => {
+    const el = document.createElement("div");
+    el.className = "chat-item";
+    el.innerHTML = `<div><strong>${t.title}</strong></div><div class="small">fragmento recuperado</div>`;
+    el.onclick = () => view.textContent = t.body;
+    list.appendChild(el);
+  });
+  view.textContent = threads[0].body;
+}
+
+function renderBoard(){
+  const el = document.getElementById("caseBoard");
+  if(!el) return;
+  el.innerHTML = `
+    <div class="card">
+      <h4>Carolina Stozzo</h4>
+      <p>desaparecida após a boate Amanhecer</p>
+      <p>último círculo: Julieta, Diana, Kaiser, Betty, Bruno, Marcelo</p>
+    </div>
+    <div class="card">
+      <h4>Julieta Argy</h4>
+      <p>sangue da vítima encontrado no armário</p>
+      <p>alega exame consentido e roubo de amostra</p>
+    </div>
+    <div class="card">
+      <h4>Geizon Stozzo</h4>
+      <p>pai oficial, delegado, conflitos familiares</p>
+      <p>motivo possível: ciúme, paternidade, controle</p>
+    </div>
+    <div class="card">
+      <h4>Marcelo Mitiva</h4>
+      <p>treinador</p>
+      <p>suspeita: possível pai biológico</p>
+    </div>
+    <div class="card">
+      <h4>Diana Mariz</h4>
+      <p>depoimento incompleto</p>
+      <p>sabe mais do que contou no interrogatório</p>
+    </div>
+    <div class="card">
+      <h4>Bruno</h4>
+      <p>namorado</p>
+      <p>ciúme, brigas, saiu da boate, ligação com Stozzo incerta</p>
+    </div>
+  `;
+}
+
+function scannerRun(){
+  if(OS.scannerRunning) return;
+  const target = document.getElementById("scanTarget").value.trim() || "amanhecer.local";
+  const out = document.getElementById("scanOut");
+  OS.scannerRunning = true;
+  out.textContent = "";
+  const steps = [
+    "coletando registros do alvo " + target,
+    "sincronizando horários...",
+    "comparando rotas de saída...",
+    "buscando lacunas entre 04:35 e 06:16..."
+  ];
+  let i = 0;
+  const findings = [
+    "câmera traseira offline por 07 min",
+    "saída lateral aberta fora do padrão",
+    "veículo sem placa parcial detectado",
+    "convergência entre treinador e vítima confirmada"
+  ];
+
+  const timer = setInterval(() => {
+    if(i < steps.length){
+      out.textContent += steps[i] + "\n";
+      i++;
+      out.scrollTop = out.scrollHeight;
+      return;
+    }
+    if(findings.length){
+      out.textContent += findings.shift() + "\n";
+      out.scrollTop = out.scrollHeight;
+      OS.networkStats.rx += 4;
+      OS.networkStats.tx += 2;
+      return;
+    }
+    clearInterval(timer);
+    out.textContent += "\nresultado: cenário contraditório, múltiplas omissões detectadas.\n";
+    OS.scannerRunning = false;
+    OS.networkStats.threat = "high";
+    log("scanner narrativo concluído para " + target);
+    toast("novas inconsistências detectadas");
+  }, 420);
+}
+
+function runTerminalCommand(raw){
+  const input = raw.trim();
+  if(!input) return "";
+  const parts = input.split(" ");
+  const cmd = parts[0].toLowerCase();
+  const args = parts.slice(1);
+
+  if(cmd === "help"){
+    return [
+      "comandos:",
+      "help",
+      "clear",
+      "ls [path]",
+      "cd <path>",
+      "pwd",
+      "cat <file>",
+      "write <file> <texto>",
+      "scan <alvo>",
+      "open <app>",
+      "ps",
+      "mail",
+      "date"
+    ].join("\n");
+  }
+  if(cmd === "clear") return "__CLEAR__";
+  if(cmd === "ls"){
+    const p = normalizePath(args[0] || OS.currentDir);
+    const l = listDir(p);
+    if(!l) return "diretório inexistente";
+    return l.map(name => {
+      const full = p === "/" ? "/" + name : p + "/" + name;
+      return (getNode(full).type === "dir" ? "[DIR] " : "[FILE] ") + name;
+    }).join("\n");
+  }
+  if(cmd === "cd"){
+    const p = normalizePath(args[0] || "/");
+    const n = getNode(p);
+    if(!n || n.type !== "dir") return "diretório inválido";
+    OS.currentDir = p;
+    refreshFilesUI();
+    return "cwd => " + OS.currentDir;
+  }
+  if(cmd === "pwd") return OS.currentDir;
+  if(cmd === "cat"){
+    const c = readFile(args[0]);
+    return c === null ? "arquivo não encontrado" : c;
+  }
+  if(cmd === "write"){
+    if(args.length < 2) return "uso: write <arquivo> <texto>";
+    const ok = writeFile(args[0], args.slice(1).join(" "));
+    refreshFilesUI();
+    return ok ? "arquivo salvo" : "falha ao salvar";
+  }
+  if(cmd === "scan"){
+    const target = args[0] || "amanhecer.local";
+    openApp("scanner");
+    setTimeout(() => {
+      document.getElementById("scanTarget").value = target;
+      scannerRun();
+    },80);
+    return "scanner aberto para " + target;
+  }
+  if(cmd === "open"){
+    const app = args[0];
+    if(!OS.apps[app]) return "app inexistente";
+    openApp(app);
+    return "abrindo " + app;
+  }
+  if(cmd === "ps"){
+    return OS.processes.map(p => `${p.pid}\t${p.name}\tCPU:${p.cpu}%\tMEM:${p.mem}MB`).join("\n");
+  }
+  if(cmd === "mail"){
+    return OS.mail.map(m => `${m.time} | ${m.from} | ${m.subject}`).join("\n");
+  }
+  if(cmd === "date"){
+    return new Date().toString();
+  }
+  return "comando desconhecido: " + cmd;
+}
+
+function boot(){
+  document.getElementById("boot").style.display = "none";
+  initOS();
+  toast("casebuild carregado");
+}
+document.getElementById("boot").onclick = boot;
+
+function initOS(){
+  seedFS();
+  seedMail();
+  seedProcesses();
+
+  registerApp({
+    id:"terminal",
+    title:"terminal",
+    icon:"⌘",
+    render:() => `
+      <div class="terminal">
+        <div id="termOut" class="term-out">NECRO//OS case shell\nDigite "help".\n\n</div>
+        <div class="term-line">
+          <div class="term-prompt">root@mostsero:${OS.currentDir}$</div>
+          <input id="termInput" class="term-input" autocomplete="off" />
+        </div>
+      </div>
+    `,
+    onMount:(w) => {
+      const input = w.querySelector("#termInput");
+      const out = w.querySelector("#termOut");
+      input.addEventListener("keydown", e => {
+        if(e.key === "Enter"){
+          const value = input.value;
+          out.textContent += "root@mostsero:" + OS.currentDir + "$ " + value + "\n";
+          const result = runTerminalCommand(value);
+          if(result === "__CLEAR__") out.textContent = "";
+          else out.textContent += result + "\n\n";
+          input.value = "";
+          out.scrollTop = out.scrollHeight;
+          w.querySelector(".term-prompt").textContent = "root@mostsero:" + OS.currentDir + "$";
+        }
+      });
+    },
+    onOpen:(w) => {
+      const i = w.querySelector("#termInput");
+      if(i) setTimeout(() => i.focus(),50);
+    }
+  });
+
+  registerApp({
+    id:"files",
+    title:"file matrix",
+    icon:"📁",
+    render:() => `
+      <div class="grid-2">
+        <div class="panel">
+          <div><strong>diretório</strong> <span class="badge" id="fileCurrentPath">/</span></div>
+          <div id="fileBrowserList" class="file-list" style="margin-top:8px"></div>
+        </div>
+        <div class="panel">
+          <div><strong>visualizador</strong> <span id="filePath" class="small">nenhum arquivo</span></div>
+          <textarea id="fileViewer" style="height:300px;margin-top:8px"></textarea>
+          <div class="row">
+            <button id="saveFileBtn">salvar</button>
+            <button id="newFileBtn">novo em /home</button>
+          </div>
+        </div>
+      </div>
+    `,
+    onMount:(w) => {
+      refreshFilesUI();
+      w.querySelector("#saveFileBtn").onclick = () => {
+        const viewer = w.querySelector("#fileViewer");
+        const path = viewer.dataset.path;
+        if(!path){
+          toast("nenhum arquivo selecionado");
+          return;
+        }
+        writeFile(path, viewer.value);
+        if(path === "/home/julieta_notes.txt") OS.state.notes = viewer.value;
+        toast("arquivo salvo");
+        log("arquivo modificado " + path);
+      };
+      w.querySelector("#newFileBtn").onclick = () => {
+        const name = prompt("nome do arquivo");
+        if(!name) return;
+        writeFile("/home/" + name, "");
+        refreshFilesUI();
+        toast("arquivo criado");
+      };
+    },
+    onOpen:() => refreshFilesUI()
+  });
+
+  registerApp({
+    id:"messenger",
+    title:"messenger",
+    icon:"💬",
+    render:() => `
+      <div class="grid-2">
+        <div class="panel">
+          <div><strong>threads</strong></div>
+          <div id="chatList" class="chat-list" style="margin-top:8px"></div>
+        </div>
+        <div class="panel">
+          <div><strong>conteúdo</strong></div>
+          <div id="chatView" class="msg-view" style="margin-top:8px"></div>
+        </div>
+      </div>
+    `,
+    onOpen:() => renderMessenger()
+  });
+
+  registerApp({
+    id:"caseboard",
+    title:"caseboard",
+    icon:"🧩",
+    render:() => `
+      <div>
+        <div class="panel">
+          <div><strong>mural do caso</strong></div>
+          <div id="caseBoard" class="board" style="margin-top:8px"></div>
+        </div>
+      </div>
+    `,
+    onOpen:() => renderBoard()
+  });
+
+  registerApp({
+    id:"archive",
+    title:"police archive",
+    icon:"📜",
+    render:() => `
+      <div class="panel">
+        <div><strong>arquivo de interrogatórios</strong></div>
+        <div class="small">acesse também via /archive no file matrix</div>
+        <div id="log-output" class="log" style="min-height:320px;margin-top:8px"></div>
+      </div>
+    `,
+    onOpen:() => refreshLogs()
+  });
+
+  registerApp({
+    id:"notes",
+    title:"julieta notes",
+    icon:"📝",
+    render:() => `
+      <div class="panel">
+        <div><strong>rascunho</strong></div>
+        <textarea id="notesArea" style="height:320px;margin-top:8px">${OS.state.notes}</textarea>
+        <div class="row">
+          <button id="saveNotesBtn">salvar em /home/julieta_notes.txt</button>
+          <button id="loadNotesBtn">recarregar</button>
+        </div>
+      </div>
+    `,
+    onMount:(w) => {
+      w.querySelector("#saveNotesBtn").onclick = () => {
+        const val = w.querySelector("#notesArea").value;
+        OS.state.notes = val;
+        writeFile("/home/julieta_notes.txt", val);
+        toast("diário sincronizado");
+        log("notes atualizadas");
+      };
+      w.querySelector("#loadNotesBtn").onclick = () => {
+        const val = readFile("/home/julieta_notes.txt") || "";
+        w.querySelector("#notesArea").value = val;
+      };
+    }
+  });
+
+  registerApp({
+    id:"vault",
+    title:"black vault",
+    icon:"🔐",
+    render:() => `
+      <div class="grid-2">
+        <div class="panel">
+          <div><strong>payload</strong></div>
+          <textarea id="vaultInput" style="height:250px"></textarea>
+          <div class="row">
+            <button id="encBtn">codificar</button>
+            <button id="decBtn">decodificar</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div><strong>resultado</strong></div>
+          <textarea id="vaultOutput" style="height:300px"></textarea>
+        </div>
+      </div>
+    `,
+    onMount:(w) => {
+      const enc = s => btoa(unescape(encodeURIComponent(s)));
+      const dec = s => {
+        try{ return decodeURIComponent(escape(atob(s))); }
+        catch(e){ return "falha ao decodificar"; }
+      };
+      w.querySelector("#encBtn").onclick = () => {
+        w.querySelector("#vaultOutput").value = enc(w.querySelector("#vaultInput").value);
+      };
+      w.querySelector("#decBtn").onclick = () => {
+        w.querySelector("#vaultOutput").value = dec(w.querySelector("#vaultInput").value);
+      };
+    }
+  });
+
+  registerApp({
+    id:"mail",
+    title:"mail daemon",
+    icon:"✉",
+    render:() => `
+      <div class="grid-2">
+        <div class="panel">
+          <div><strong>caixa de entrada</strong></div>
+          <div id="mailList" style="margin-top:8px;max-height:320px;overflow:auto"></div>
+        </div>
+        <div class="panel">
+          <div><strong>mensagem</strong></div>
+          <textarea id="mailBody" style="height:340px;margin-top:8px"></textarea>
+        </div>
+      </div>
+    `,
+    onOpen:() => renderMail()
+  });
+
+  registerApp({
+    id:"scanner",
+    title:"route scanner",
+    icon:"☣",
+    render:() => `
+      <div class="col">
+        <div class="panel">
+          <div class="row">
+            <input id="scanTarget" placeholder="alvo ex: amanhecer.local" />
+            <button id="scanBtn" style="max-width:190px">reconstruir rota</button>
+          </div>
+        </div>
+        <div class="panel">
+          <div><strong>resultado</strong></div>
+          <div id="scanOut" class="log" style="min-height:280px;margin-top:8px"></div>
+        </div>
+      </div>
+    `,
+    onMount:(w) => {
+      w.querySelector("#scanBtn").onclick = scannerRun;
+    }
+  });
+
+  registerApp({
+    id:"monitor",
+    title:"system monitor",
+    icon:"📡",
+    render:() => `
+      <div class="grid-2">
+        <div class="panel">
+          <div><strong>métricas</strong></div>
+          <div class="small">cpu</div>
+          <div class="progress"><div id="monCpuBar"></div></div>
+          <div class="small" style="margin-top:8px">memória</div>
+          <div class="progress"><div id="monMemBar"></div></div>
+          <div class="small" style="margin-top:8px">rx</div>
+          <div class="progress"><div id="monRxBar"></div></div>
+          <div class="small" style="margin-top:8px">tx</div>
+          <div class="progress"><div id="monTxBar"></div></div>
+        </div>
+        <div class="panel">
+          <div><strong>estado</strong></div>
+          <table class="kv"><tbody id="monitorStats"></tbody></table>
+        </div>
+      </div>
+    `,
+    onOpen:() => updateMonitorUI()
+  });
+
+  registerApp({
+    id:"processes",
+    title:"process daemon",
+    icon:"⚙",
+    render:() => `
+      <div class="panel">
+        <div><strong>processos</strong></div>
+        <div id="procList" style="margin-top:8px"></div>
+      </div>
+    `,
+    onOpen:() => refreshProcessUI()
+  });
+
+  registerApp({
+    id:"ascii",
+    title:"ascii reliquary",
+    icon:"☠",
+    render:() => `
+      <div class="col">
+        <div class="panel">
+          <div class="row">
+            <select id="asciiSelect">
+              <option value="sigil">sigil</option>
+              <option value="eye">eye</option>
+              <option value="skyline">skyline</option>
+            </select>
+            <button id="asciiLoadBtn" style="max-width:180px">carregar</button>
+          </div>
+        </div>
+        <div id="asciiBox" class="ascii-box">${ASCII.sigil}</div>
+      </div>
+    `,
+    onMount:(w) => {
+      w.querySelector("#asciiLoadBtn").onclick = () => {
+        const sel = w.querySelector("#asciiSelect").value;
+        w.querySelector("#asciiBox").textContent = ASCII[sel];
+      };
+    }
+  });
+
+  Object.values(OS.apps).forEach(app => {
+    createWindow(app);
+    createIcon(app);
+    createStartItem(app);
+  });
+
+  log("caso Carolina Stozzo carregado");
+  log("mensagens restauradas");
+  log("arquivos de evidência montados em /evidence");
+  log("interrogatórios parcialmente recuperados");
+  log("observador silencioso detectado na malha");
+  log("Julieta manteve informações fora do depoimento");
+  log("Diana omitiu parte da conversa da boate");
+
+  setInterval(() => {
+    const pool = [
+      "novo conflito detectado entre linha oficial e depoimentos",
+      "lacuna horária ampliada entre 05:58 e 06:16",
+      "artefato de imagem associado ao treinador",
+      "mensagem anônima sugere motivação anterior à boate",
+      "inconsistência entre Bruno e Geizon permanece sem explicação"
+    ];
+    log(pool[Math.floor(Math.random()*pool.length)]);
+  }, 22000);
+
+  openApp("messenger");
+  openApp("caseboard");
+  openApp("terminal");
+}
+</script>
 </body>
 </html>
