@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-<title>LOST//OS :: MOSTSERO CASEBUILD</title>
+<title>JANE DOE//OS :: MOSTSERO CASEBUILD</title>
 <style>
 :root{
   --bg:#05070a;
@@ -558,12 +558,14 @@ textarea{resize:vertical}
 <div id="boot">
   <div id="bootFrame">
 <pre>
-███╗   ██╗███████╗ ██████╗██████╗  ██████╗     ██████╗ ███████╗
-████╗  ██║██╔════╝██╔════╝██╔══██╗██╔═══██╗   ██╔═══██╗██╔════╝
-██╔██╗ ██║█████╗  ██║     ██████╔╝██║   ██║   ██║   ██║███████╗
-██║╚██╗██║██╔══╝  ██║     ██╔══██╗██║   ██║   ██║   ██║╚════██║
-██║ ╚████║███████╗╚██████╗██║  ██║╚██████╔╝   ╚██████╔╝███████║
-╚═╝  ╚═══╝╚══════╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝     ╚═════╝ ╚══════╝
+    ####    ##     ##   ##  #######           #####     #####   #######
+     ##    ####    ###  ##   ##   #            ## ##   ##   ##   ##   #
+     ##   ##  ##   #### ##   ## #              ##  ##  ##   ##   ## #
+     ##   ##  ##   ## ####   ####              ##  ##  ##   ##   ####
+ ##  ##   ######   ##  ###   ## #              ##  ##  ##   ##   ## #
+ ##  ##   ##  ##   ##   ##   ##   #            ## ##   ##   ##   ##   #
+  ####    ##  ##   ##   ##  #######           #####     #####   #######
+
 
 ===============================================================
 :: MOSTSERO INVESTIGATION BUILD
@@ -601,7 +603,7 @@ Outras continuam falando pelos arquivos.
 
 <div id="startMenu">
   <div class="menu-head">
-    <div><strong>NECRO//OS</strong> :: Mostsero Casebuild</div>
+    <div><strong>JANE DOE//OS</strong> :: Mostsero Casebuild</div>
     <div class="small">arquivo, rastreio, mensagens, reconstrução</div>
   </div>
   <div class="menu-list" id="startMenuList"></div>
@@ -629,7 +631,7 @@ const OS = {
   drag: {active:false, win:null, dx:0, dy:0},
   currentDir: "/",
   state: {
-    notes: `CAPÍTULO UM
+    notes: `PENSAMENTO 32,
 
 Ela era síntese pura, a resolução do problema inexistente.
 Talvez amar fosse apenas outra forma de errar com método.
@@ -837,7 +839,7 @@ function seedProcesses(){
     {name:"messenger.core", cpu:1, mem:41, pid:221},
     {name:"archive.reader", cpu:4, mem:58, pid:307},
     {name:"watcher.net", cpu:6, mem:73, pid:411},
-    {name:"mail.daemon", cpu:1, mem:30, pid:512}
+    {name:"mail.user", cpu:1, mem:30, pid:512}
   ];
 }
 
@@ -1412,7 +1414,7 @@ function initOS(){
   registerApp({
     id:"files",
     title:"file matrix",
-    icon:"📁",
+    icon:"🖼",
     render:() => `
       <div class="grid-2">
         <div class="panel">
@@ -1457,7 +1459,7 @@ function initOS(){
   registerApp({
     id:"messenger",
     title:"messenger",
-    icon:"💬",
+    icon:"⌨",
     render:() => `
       <div class="grid-2">
         <div class="panel">
@@ -1476,7 +1478,7 @@ function initOS(){
   registerApp({
     id:"caseboard",
     title:"caseboard",
-    icon:"🧩",
+    icon:"⁴⁰⁴",
     render:() => `
       <div>
         <div class="panel">
@@ -1491,7 +1493,7 @@ function initOS(){
   registerApp({
     id:"archive",
     title:"police archive",
-    icon:"📜",
+    icon:"⚠︎",
     render:() => `
       <div class="panel">
         <div><strong>arquivo de interrogatórios</strong></div>
@@ -1505,7 +1507,7 @@ function initOS(){
   registerApp({
     id:"notes",
     title:"julieta notes",
-    icon:"📝",
+    icon:"ᝰ.ᐟ",
     render:() => `
       <div class="panel">
         <div><strong>rascunho</strong></div>
@@ -1568,8 +1570,8 @@ function initOS(){
 
   registerApp({
     id:"mail",
-    title:"mail daemon",
-    icon:"✉",
+    title:"mail user",
+    icon:"✉︎",
     render:() => `
       <div class="grid-2">
         <div class="panel">
@@ -1611,7 +1613,7 @@ function initOS(){
   registerApp({
     id:"monitor",
     title:"system monitor",
-    icon:"📡",
+    icon:"⏻",
     render:() => `
       <div class="grid-2">
         <div class="panel">
