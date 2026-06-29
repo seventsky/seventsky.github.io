@@ -1147,4 +1147,3 @@ function makeDraggableIcon(icon){
 
 }
 
-</script>
