@@ -307,13 +307,29 @@ function registerApp(app){
   OS.apps[app.id] = app;
 }
 
+let iconIndex = 0;
+
 function createIcon(app){
   const d = document.createElement("div");
+
   d.className = "icon";
-  d.innerHTML = `<div class="i">${app.icon}</div><div class="t">${app.title}</div>`;
+  d.innerHTML = `
+    <div class="i">${app.icon}</div>
+    <div class="t">${app.title}</div>
+  `;
+
   d.onclick = () => openApp(app.id);
+
   d.style.position = "absolute";
+
+  // posição inicial
+  d.style.left = "20px";
+  d.style.top = (20 + iconIndex * 90) + "px";
+
+  iconIndex++;
+
   makeDraggableIcon(d);
+
   document.getElementById("desktop").appendChild(d);
 }
 
