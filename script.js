@@ -1,4 +1,4 @@
-<script>
+
 const OS = {
   z: 20,
   apps: {},
