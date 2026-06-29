@@ -309,6 +309,8 @@ function registerApp(app){
 
 let iconIndex = 0;
 
+const iconPositions = JSON.parse(localStorage.getItem("iconPositions") || "{}");
+
 function createIcon(app){
   const d = document.createElement("div");
 
@@ -322,13 +324,23 @@ function createIcon(app){
 
   d.style.position = "absolute";
 
-  // posição inicial
-  d.style.left = "20px";
-  d.style.top = (20 + iconIndex * 90) + "px";
+  
+ d.dataset.app = app.id;
 
-  iconIndex++;
+if(iconPositions[app.id]){
+    d.style.left = iconPositions[app.id].left;
+    d.style.top = iconPositions[app.id].top;
+}else{
+    d.style.left = "20px";
+    d.style.top = (20 + iconIndex * 90) + "px";
+    iconIndex++;
+}
+  
+  document.querySelector("#desktop").appendChild(d);
 
-  makeDraggableIcon(d);
+  return d;
+  
+  makeDraggableIcon(d, app);
 
   document.getElementById("desktop").appendChild(d);
 }
