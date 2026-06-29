@@ -312,6 +312,8 @@ function createIcon(app){
   d.className = "icon";
   d.innerHTML = `<div class="i">${app.icon}</div><div class="t">${app.title}</div>`;
   d.onclick = () => openApp(app.id);
+  d.style.position = "absolute";
+  makeDraggableIcon(d);
   document.getElementById("desktop").appendChild(d);
 }
 
@@ -1119,4 +1121,30 @@ function initOS(){
   openApp("caseboard");
   openApp("terminal");
 }
+
+function makeDraggableIcon(icon){
+
+    let dragging = false;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    icon.addEventListener("mousedown", function(e){
+        dragging = true;
+        offsetX = e.clientX - icon.offsetLeft;
+        offsetY = e.clientY - icon.offsetTop;
+    });
+
+    document.addEventListener("mousemove", function(e){
+        if(!dragging) return;
+
+        icon.style.left = (e.clientX - offsetX) + "px";
+        icon.style.top = (e.clientY - offsetY) + "px";
+    });
+
+    document.addEventListener("mouseup", function(){
+        dragging = false;
+    });
+
+}
+
 </script>
