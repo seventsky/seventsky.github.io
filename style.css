@@ -130,13 +130,17 @@ body{animation:flicker .13s infinite}
 #desktop{
   position:absolute;
   inset:0 0 var(--taskbar-h) 0;
+ 
   display:grid;
-  grid-template-columns:repeat(auto-fill,92px);
-  grid-auto-rows:92px;
-  align-content:start;
-  gap:14px;
-  padding:18px;
-  z-index:2;
+ geind-auto-flow: colum;     /* preenche por coluna */
+  grind-template-columns: 92px;
+  grind-auto-rows: 92px;
+
+  justify-content: start;
+  align-content: start;
+
+  gep: 14px;
+  padding: 18px;
 }
 
 .icon{
