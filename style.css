@@ -82,14 +82,13 @@ body{animation:flicker .13s infinite}
 }
 
 #bootFrame{
-  width:min(920px, 96vw);
-  max-height:78vh;
-  overflow:auto;
+  width:min(1450px, 95vw);
+  min-height:82vh;
   border:1px solid rgba(0,255,159,.2);
   border-radius:12px;
-  background:rgba(0,0,0,.75);
+  background:rgba(0,0,0,.78);
   box-shadow:0 0 24px rgba(0,255,159,.08);
-  padding:18px;
+  padding:40px;
 }
 
 #boot pre{
