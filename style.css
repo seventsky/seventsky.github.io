@@ -537,3 +537,23 @@ textarea{resize:vertical}
   line-height:1.08;
   font-size:12px;
   min-height:250px;
+
+  html{
+
+  filter: grayscale(1) sepia(1) hue-rotate(90deg) saturate(4) brightness(.9) contrast(1.15);
+
+}
+
+*::-webkit-scrollbar{ width:10px; height:10px; }
+
+*::-webkit-scrollbar-track{ background:#040a05; }
+
+*::-webkit-scrollbar-thumb{ background:rgba(45,255,120,.35); border-radius:6px; }
+
+*::-webkit-scrollbar-thumb:hover{ background:rgba(45,255,120,.55); }
+
+
+
+::selection{ background:rgba(45,255,120,.35); color:#000; }
+
+input,textarea{ caret-color: var(--glow); }
