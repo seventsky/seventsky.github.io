@@ -84,6 +84,9 @@ body{animation:flicker .13s infinite}
 #bootFrame{
   width:min(1450px, 95vw);
   min-height:82vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
   border:1px solid rgba(0,255,159,.2);
   border-radius:12px;
   background:rgba(0,0,0,.78);
@@ -92,11 +95,12 @@ body{animation:flicker .13s infinite}
 }
 
 #boot pre{
+  width:100%;
   margin:0;
   white-space:pre;
   overflow:visible;
-  font-size:14px;
-  line-height:1.12;
+  font-size:15px;
+  line-height:1.15;
   color:#96ffcb;
   text-shadow:0 0 10px rgba(0,255,159,.25);
 }
@@ -527,20 +531,24 @@ textarea{resize:vertical}
 }
 
 .ascii-box{
-  background:#04080d;
-  border:1px solid rgba(0,255,159,.12);
-  border-radius:8px;
-  padding:10px;
-  overflow:auto;
-  white-space:pre;
-  line-height:1.08;
-  font-size:12px;
-  min-height:250px;
+    background:#04080d;
+    border:1px solid rgba(0,255,159,.12);
+    border-radius:8px;
+    padding:10px;
+    overflow:auto;
+    white-space:pre;
+    line-height:1.08;
+    font-size:12px;
+    min-height:250px;
+}
 
-  html{
-
-  filter: grayscale(1) sepia(1) hue-rotate(90deg) saturate(4) brightness(.9) contrast(1.15);
-
+html{
+    filter: grayscale(1)
+            sepia(1)
+            hue-rotate(90deg)
+            saturate(4)
+            brightness(.9)
+            contrast(1.15);
 }
 
 *::-webkit-scrollbar{ width:10px; height:10px; }
