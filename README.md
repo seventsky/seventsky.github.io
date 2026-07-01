@@ -2,13 +2,13 @@
 
 > MOSTSERO INVESTIGATION BUILD
 
-Um sistema operacional fictício criado para a reconstrução de uma investigação fragmentada.
+A fictional operating system created for the reconstruction of a fragmented investigation.
 
-Através de mensagens recuperadas, arquivos ocultos, registros policiais e terminais interativos, o usuário deve conectar informações e descobrir o que aconteceu com **Carolina Stozzo**.
+Through recovered messages, hidden files, police records, and interactive terminals, the user must piece together the evidence and uncover what happened to Carolina Stozzo.
 
-Não existe uma linha reta.
+There is no straight path.
 
-Não existe uma única versão dos fatos.
+There is no single version of the truth.
 
 
 ---
@@ -34,16 +34,15 @@ local daemon          : watching
 - mail user
 - route scanner
 
-Cada módulo contém fragmentos da investigação e informações relevantes para a reconstrução do caso.
-
+Each module contains fragments of the investigation and relevant information needed to reconstruct the case.
 ---
 
 ## WARNING
 
 ```txt
-alguns arquivos estão incompletos
-algumas mensagens foram apagadas
-nem todos os registros são confiáveis
+Some files are incomplete.
+Some messages have been deleted.
+Not every record can be trusted.
 ```
 
 ---
@@ -81,8 +80,8 @@ version      : investigation build
 
  https://seventsky.github.io
 
-> Acesso antecipado disponível.
+>Early Access is now available.
 >
-> Entre no sistema, explore os arquivos e reconstrua o caso.
+>Enter the system, explore the files, and reconstruct the case.
 
 ---
